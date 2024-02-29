@@ -1,7 +1,8 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
-  get  'new'    => 'game#new',   :as => 'new_game'
-  post 'create' => 'game#create',:as => 'create_game'
+Rails.application.routes.draw do
+  get  'new'    => 'game#new', :as => 'new_game'
+  post 'create' => 'game#create', :as => 'create_game'
   get  'show'   => 'game#show',  :as => 'game'
   post 'guess'  => 'game#guess', :as => 'guess'
   get  'win'    => 'game#win',   :as => 'win_game'

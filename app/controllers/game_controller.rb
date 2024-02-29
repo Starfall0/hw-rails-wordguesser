@@ -1,10 +1,10 @@
-class GameController < ApplicationController
+# frozen_string_literal: true
 
+class GameController < ApplicationController
   before_action :get_game_from_session
   after_action  :store_game_in_session
-  
-  def new
-  end
+
+  def new; end
 
   def create
     word = params[:word] || WordGuesserGame.get_random_word
@@ -21,11 +21,9 @@ class GameController < ApplicationController
   def guess
     letter = params[:guess]
     begin
-      if ! @game.guess(letter[0])
-        flash[:message] = "You have already used that letter." 
-      end
+      flash[:message] = 'You have already used that letter.' unless @game.guess(letter[0])
     rescue ArgumentError
-      flash[:message] = "Invalid guess."
+      flash[:message] = 'Invalid guess.'
     end
     redirect_to game_path
   end
@@ -33,18 +31,18 @@ class GameController < ApplicationController
   def win
     redirect_to game_path unless @game.check_win_or_lose == :win
   end
-  
+
   def lose
     redirect_to game_path unless @game.check_win_or_lose == :lose
   end
 
   private
-  
+
   def get_game_from_session
     @game = WordGuesserGame.new('')
-    if !session[:game].blank?
-      @game = YAML.load(session[:game])
-    end
+    return if session[:game].blank?
+
+    @game = YAML.safe_load(session[:game])
   end
 
   def store_game_in_session
